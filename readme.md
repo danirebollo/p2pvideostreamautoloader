@@ -9,7 +9,9 @@ Windows script to load p2p/acestream id from external URL at boot in fullscreen 
 .\ex.bat
 ```
 
-3- put shortcut in "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" to autoload at boot
+3- ~~put shortcut in "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" to autoload at boot~~ 
+
+Not needed anymore. Script creates a shortcut in startup folder automatically.
 
 4- Put desired p2p/acestream id in $weblocation. Your web only need to have the id. Nothing more than this. You can use github pages to store this web. Create str1.html with this content
 ```

