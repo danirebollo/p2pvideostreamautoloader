@@ -1,6 +1,12 @@
 $scriptlocation=(Get-Location).Path
 . $scriptlocation\env.ps1
 
+Write-Output "Script location: $scriptlocation "
+Write-Output "Environment: $scriptlocation\env.ps1 "
+Write-Output "acestreamlocation: $acestreamlocation "
+Write-Output "weblocation: $weblocation "
+Write-Output "--------------------------"
+
 $a = ""
 $abk = "";
 
@@ -19,7 +25,7 @@ If (!(Test-Path -Path $ShortcutPath ))
 }
 do {    
     try {
-        $a = (Invoke-WebRequest -URI $weblocation)
+        $a = (Invoke-WebRequest -URI $weblocation -UseBasicParsing).Content
         $a=$a.ToString()
         $a = $a.Trim()
      }
