@@ -13,6 +13,8 @@ $abk = "";
 # look for shortcut
 $ShortcutPath = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\ex.lnk"
 
+#netsh wlan connect ssid=$AP1_SSID key=$AP1_PASS
+
 If (!(Test-Path -Path $ShortcutPath )) 
 {
     Write-Output "Creating shortcut on $ShortcutPath"
@@ -40,7 +42,8 @@ do {
         $aceengine = Get-Process ace_engine -ErrorAction SilentlyContinue
         Write-Output "aceplayer PROCESS:  -$aceplayer-. Aceengine: $aceengine "
 
-        if (($abk -notlike $a) -or (!$aceplayer) -or (!$aceengine)) { #-or (!$chrome)
+        if (($abk -notlike $a) -or (!$aceplayer) -or (!$aceengine)) 
+        { #-or (!$chrome)
             Write-Output "New stream. Loading... -$a-"
 
             # check chrome process
@@ -75,13 +78,14 @@ do {
         
             Write-Output "Loading stream... -$a-"
             Set-location $acestreamlocation
-            .\ace_player.exe acestream://$a --fullscreen --play-and-exit --volume=100 acestream://quit
+            .\ace_player.exe acestream://$a --fullscreen --play-and-exit --volume=256 acestream://quit
             Set-location $scriptlocation
 
-            if (!$chrome) {
+            if (1) #(!$chrome) 
+            {
                 $chrome = Get-Process chrome -ErrorAction SilentlyContinue
                 if ($chrome) {
-                    Write-Output "Closing ace_player... -$a-"
+                    Write-Output "Closing chrome... -$a-"
                     # try gracefully first
                     $chrome.CloseMainWindow()
                     Start-Sleep 2
@@ -95,6 +99,21 @@ do {
         Write-Output "Readed TXT: -$a-. BK: -$abk-"
         $abk = $a;
         
+        if (1) #(!$chrome) 
+        {
+            $chrome = Get-Process chrome -ErrorAction SilentlyContinue
+            if ($chrome) {
+                Write-Output "Closing chrome... -$a-"
+                # try gracefully first
+                $chrome.CloseMainWindow()
+                Start-Sleep 2
+                if (!$chrome.HasExited) {
+                    $chrome | Stop-Process -Force
+                }
+            }
+        }
+        Remove-Variable chrome
+
     }
     else {
         Write-Output "CAUTION. Check internet."
